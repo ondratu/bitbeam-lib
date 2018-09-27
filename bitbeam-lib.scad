@@ -62,6 +62,22 @@ module cylinder_arm(holes, h=1, side_holes=true, skip=[], skip_side=[]){
     }
 }
 
+module mix_arm(holes, h=1, side_holes=true, skip=[], skip_side=[]){
+    difference(){
+        hull(){
+            cube([unit, unit,unit*h], center=true);
+            translate([(holes-1)*unit, 0, 0])
+                cylinder(d=unit, h=unit*h, center=true);
+        }
+
+        holes(holes, h, skip);
+        if (side_holes && h >= 1){
+            rotate([90, 0, 0])
+                holes(holes, 1, skip_side);
+        }
+    }
+}
+
 module cylinder_angle(left, right, angle=45, h=1, side_holes=true){
     rotate([0, 0, 180-angle])
         cylinder_arm(left, h=h, side_holes=side_holes, skip_side=[0]);
