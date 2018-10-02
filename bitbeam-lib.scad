@@ -213,3 +213,93 @@ module cylinder_base(x, y, h=1, quad=true, fill_holes=true){
         }
     }
 }
+
+module cube_plate(x, y, x2=0, h=1, holes=[0, 1, 2, 3]){
+    x2 = (x2 == 0) ? x : x2;
+    difference(){
+        hull(){
+            hull(){
+                cube([unit, unit, unit*h], center=true);
+                translate([(x-1)*unit, 0, 0])
+                    cube([unit, unit, unit*h], center=true);
+            }
+            translate([0, (y-1)*unit, 0])
+            hull(){
+                cube([unit, unit, unit*h], center=true);
+                translate([(x2-1)*unit, 0, 0])
+                    cube([unit, unit, unit*h], center=true);
+            }
+        }
+        if (search(0, holes)){
+            holes(x, h);
+        }
+        if (search(1, holes)){
+            rotate([0, 0, 90])
+                holes(y, h);
+        }
+        if (search(2, holes)){
+            translate([0, (y-1)*unit, 0])
+                holes(x2, h);
+        }
+        if (search(3, holes)){
+            if (x != x2){
+                a = y - 1;
+                b = x - x2;
+                c = sqrt(b*b+a*a);
+                alpha = asin(b/c);
+                translate([(x-1)*unit, 0, 0])
+                    rotate([0, 0, 90+alpha])
+                        holes(c, h);
+            } else {
+                translate([(x-1)*unit, 0, 0])
+                    rotate([0, 0, 90])
+                        holes(y, h);
+            }
+        }
+    }
+}
+
+module cylinder_plate(x, y, x2=0, h=1, holes=[0, 1, 2, 3]){
+    x2 = (x2 == 0) ? x : x2;
+    difference(){
+        hull(){
+            hull(){
+                cylinder(d=unit, h=h*unit, center=true);
+                translate([(x-1)*unit, 0, 0])
+                    cylinder(d=unit, h=h*unit, center=true);
+            }
+            translate([0, (y-1)*unit, 0])
+            hull(){
+                cylinder(d=unit, h=h*unit, center=true);
+                translate([(x2-1)*unit, 0, 0])
+                    cylinder(d=unit, h=h*unit, center=true);
+            }
+        }
+        if (search(0, holes)){
+            holes(x, h);
+        }
+        if (search(1, holes)){
+            rotate([0, 0, 90])
+                holes(y, h);
+        }
+        if (search(2, holes)){
+            translate([0, (y-1)*unit, 0])
+                holes(x2, h);
+        }
+        if (search(3, holes)){
+            if (x != x2){
+                a = y - 1;
+                b = x - x2;
+                c = sqrt(b*b+a*a);
+                alpha = asin(b/c);
+                translate([(x-1)*unit, 0, 0])
+                    rotate([0, 0, 90+alpha])
+                        holes(c, h);
+            } else {
+                translate([(x-1)*unit, 0, 0])
+                    rotate([0, 0, 90])
+                        holes(y, h);
+            }
+        }
+    }
+}

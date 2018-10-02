@@ -11,7 +11,7 @@ Variables
 :rim:   When is set to ``true``, all holes have rim, like LEGO® Technic parts. Default value is **false**.
 :rim_h: Rim height in millimeters, which is **1**.
 :rim_d: Rim diameter in millimeters, which is **6**.
-:$fn:   Openscad number of fragments used by holes and ``cylinder_`` parts. Library set this to **25**.  
+:$fn:   Openscad number of fragments used by holes and ``cylinder_`` parts. Library set this to **25**.
 
 Parts
 -----
@@ -32,11 +32,11 @@ holes
   :alt: holes with rim example
   :align: center
   :figwidth: 100%
-  
+
 .. code:: c++
 
   module holes(size, h=1, skip=[]);
-  
+
 Holes module is used in parts. Holes start from center with ``unit`` space. For more details about height, rim and skip, see `parts`_ start.
 
 arm
@@ -64,7 +64,7 @@ skip : vector
   Vector of holes indexes from 0, which will be not generated.
 skip_side : vector
   Like skip, but for side holes.
-  
+
 angle
 `````
 .. figure:: img/angle.png
@@ -73,10 +73,10 @@ angle
   :figwidth: 100%
 
 .. code:: c++
-  
+
   module cube_angle(left, right, angle=45, h=1, side_holes=true);
   module cylinder_angle(left, right, angle=45, h=1, side_holes=true);
-  
+
 Angle modules create parts from two arms ``left`` and ``right``, which are in ``180-angle`` angle. That is standard for tube nodes. Center of arm is in center of middle bit. As you can see in example, middle bit are shared of both left, and right arm. This middle bit never have side hole.
 
 left : number
@@ -85,7 +85,7 @@ right : number
   Length of right part arm.
 angle : number
   Degrees of angle between arms.
-  
+
 frame
 `````
 .. figure:: img/frame.png
@@ -94,12 +94,12 @@ frame
   :figwidth: 100%
 
 .. code:: c++
-  
+
   module cube_frame(x, y, h=1, side_holes=true);
   module cylinder_frame(x, y, h=1, side_holes=true);
-  
+
 Frame modules crate frame from four arms without side hole in corners.
-  
+
 base
 ````
 .. figure:: img/base.png
@@ -111,10 +111,29 @@ base
 
   module cube_base(x, y, h=1, quad=true, fill_holes=true);
   module cylinder_base(x, y, h=1, quad=true, fill_holes=true);
-  
+
 Base modules can create two type of base parts. First is like frame with fill, second is only triangle.
 
 quad : bool
   If quad is false, triangle will be generated. Quad is **true** by default.
 fill_holes : bool
   If is set to **true**, which is default, base will be full of holes. Otherwise only squared arms will have holes.
+
+plate
+`````
+.. figure:: img/plate.png
+  :alt: bae example
+  :align: center
+  :figwidth: 100%
+
+.. code:: c++
+
+  cube_plate(x, y, x2=0, h=1, holes=[0, 1, 2, 3]);
+  cylinder_plate(x, y, x2=0, h=1, holes=[0, 1, 2, 3]);
+
+Plate modules are similar to `base`_ modules but with other interface and other functionality. Modules create block with size ``x`` and ``y``. And could be create triangle with ``x2=1`` value.
+
+x2 : number
+  If is **0**, which is default, that will create cuboid with parallel sides, but when is another than x, that create trapezoid.
+holes : vector
+  Holes are index of sides, start with zero, where holes will be generated. Default value is **[0, 1, 2, 3]** which holes on all sides. Holes on last trapezoidal side are rotated.
