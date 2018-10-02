@@ -11,20 +11,21 @@ rim = false;
 $fn=25;
 
 module holes(size, h=1, skip=[]){
-    for(i = [0:size-1]){
-        if (!search(i, skip)){
-            translate([i*unit, 0, 0])
-                cylinder(d=hole, h=unit*h+0.1, center=true);
-            }
-    }
-    if (rim && h > 0.26){
+    if (size > 0) {
         for(i = [0:size-1]){
-             if (!search(i, skip)){
-                translate([i*unit, 0, h*unit/2-rim_h/2])
-                    cylinder(d=rim_d, h=rim_h+0.1, center=true);
-                translate([i*unit, 0, -h*unit/2+rim_h/2])
-                    cylinder(d=rim_d, h=rim_h+0.1, center=true);
-
+            if (!search(i, skip)){
+                translate([i*unit, 0, 0])
+                    cylinder(d=hole, h=unit*h+0.1, center=true);
+                }
+        }
+        if (rim && h > 0.26){
+            for(i = [0:size-1]){
+                 if (!search(i, skip)){
+                    translate([i*unit, 0, h*unit/2-rim_h/2])
+                        cylinder(d=rim_d, h=rim_h+0.1, center=true);
+                    translate([i*unit, 0, -h*unit/2+rim_h/2])
+                        cylinder(d=rim_d, h=rim_h+0.1, center=true);
+                }
             }
         }
     }
@@ -138,77 +139,104 @@ module cylinder_frame(x, y, h=1, side_holes=true){
         cylinder_arm(x, h=h, side_holes=side_holes, skip_side=[0, x-1]);
 }
 
-module cube_base(x, y, h=1, quad=true, fill_holes=true){
+module cube_base(x, y, x2=0, h=1, fill_holes=true){
+    x2 = (x2 == 0) ? x : x2;
     difference(){
         hull(){
-            cube([unit, unit, unit*h], center=true);
-            translate([(x-1)*unit, 0, 0])
+            hull(){
                 cube([unit, unit, unit*h], center=true);
-            translate([0, (y-1)*unit, 0])
-                cube([unit, unit, unit*h], center=true);
-
-            if (quad){
-                translate([(x-1)*unit, (y-1)*unit, 0])
+                translate([(x-1)*unit, 0, 0])
                     cube([unit, unit, unit*h], center=true);
-
+            }
+            translate([0, (y-1)*unit, 0])
+            hull(){
+                cube([unit, unit, unit*h], center=true);
+                translate([(x2-1)*unit, 0, 0])
+                    cube([unit, unit, unit*h], center=true);
             }
         }
 
         holes(x, h);
         rotate([0, 0, 90])
             holes(y, h);
-        if (quad || fill_holes){
-            translate([0, (y-1)*unit, 0])
-                holes(x, h);
+        translate([0, (y-1)*unit, 0])
+            holes(x2, h);
 
+        if (x == x2){
             translate([(x-1)*unit, 0, 0])
                 rotate([0, 0, 90])
                     holes(y, h);
 
-        }
+            if (fill_holes){
+                for (i = [1: y-2]) {
+                    translate([unit, i*unit, 0])
+                        holes(x-2, h);
+                }
+            }
 
-        if (fill_holes) {
-            for (i = [1: y-2]) {
-                translate([unit, i*unit, 0])
-                    holes(x-2, h);
+        } else {
+            if (fill_holes) {
+                a = y - 1;
+                b = x - x2;
+                c = sqrt(b*b+a*a);
+                alpha = asin(b/c);
+
+                for (i = [1: y-2]) {
+                    translate([unit, i*unit, 0])
+                        holes(ceil(x-2-tan(alpha)*i), h);
+                }
             }
         }
     }
 }
 
-module cylinder_base(x, y, h=1, quad=true, fill_holes=true){
+module cylinder_base(x, y, x2=0, h=1, fill_holes=true){
+    x2 = (x2 == 0) ? x : x2;
     difference(){
         hull(){
-            cylinder(d=unit, h=unit*h, center=true);
-            translate([(x-1)*unit, 0, 0])
-                cylinder(d=unit, h=unit*h, center=true);
+            hull(){
+                cylinder(d=unit, h=h*unit, center=true);
+                translate([(x-1)*unit, 0, 0])
+                    cylinder(d=unit, h=h*unit, center=true);
+            }
             translate([0, (y-1)*unit, 0])
-                cylinder(d=unit, h=unit*h, center=true);
-
-            if (quad){
-                translate([(x-1)*unit, (y-1)*unit, 0])
-                    cylinder(d=unit, h=unit*h, center=true);
-
+            hull(){
+                cylinder(d=unit, h=h*unit, center=true);
+                translate([(x2-1)*unit, 0, 0])
+                    cylinder(d=unit, h=h*unit, center=true);
             }
         }
-
+ 
         holes(x, h);
         rotate([0, 0, 90])
             holes(y, h);
-        if (quad || fill_holes){
-            translate([0, (y-1)*unit, 0])
-                holes(x, h);
 
+        translate([0, (y-1)*unit, 0])
+                holes(x2, h);
+
+        if (x == x2){
             translate([(x-1)*unit, 0, 0])
                 rotate([0, 0, 90])
                     holes(y, h);
 
-        }
+            if (fill_holes) {
+                for (i = [1: y-2]) {
+                    translate([unit, i*unit, 0])
+                        holes(x-2, h);
+                }
+            }
 
-        if (fill_holes) {
-            for (i = [1: y-2]) {
-                translate([unit, i*unit, 0])
-                    holes(x-2, h);
+        } else {
+            if (fill_holes) {
+                a = y - 1;
+                b = x - x2;
+                c = sqrt(b*b+a*a);
+                alpha = asin(b/c);
+
+                for (i = [1: y-2]) {
+                    translate([unit, i*unit, 0])
+                        holes(ceil(x-2-tan(alpha)*i), h);
+                }
             }
         }
     }

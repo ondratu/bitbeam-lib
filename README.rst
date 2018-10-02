@@ -109,15 +109,15 @@ base
 
 .. code:: c++
 
-  module cube_base(x, y, h=1, quad=true, fill_holes=true);
-  module cylinder_base(x, y, h=1, quad=true, fill_holes=true);
+  module cube_base(x, y, x2=0, h=1, fill_holes=true);
+  module cylinder_base(x, y, x2=0, h=1, fill_holes=true);
 
-Base modules can create two type of base parts. First is like frame with fill, second is only triangle.
+Base modules can create two type of base parts. First is like frame with fill, second is trapezoid.
 
-quad : bool
-  If quad is false, triangle will be generated. Quad is **true** by default.
+x2 : number
+  If is **0**, which is default, that will create cuboid with parallel sides, but when is another than x, that create trapezoid.
 fill_holes : bool
-  If is set to **true**, which is default, base will be full of holes. Otherwise only squared arms will have holes.
+  If is set to **true**, which is default, base will be full of holes. Otherwise only squared arms will have holes. Side holes are not in trapezoidal side, and all holes ends in front of this side.
 
 plate
 `````
