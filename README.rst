@@ -137,3 +137,43 @@ x2 : number
   If is **0**, which is default, that will create cuboid with parallel sides, but when is another than x, that create trapezoid.
 holes : vector
   Holes are index of sides, start with zero, where holes will be generated. Default value is **[0, 1, 2, 3]** which holes on all sides. Holes on last trapezoidal side are rotated.
+
+T (tee)
+```````
+.. figure:: img/tee.png
+  :alt: T example
+  :align: center
+  :figwidth: 100%
+
+.. code:: c++
+
+  cube_t(x, y, h=1);
+  cylinder_t(x, y, h=1);
+
+T (tee from plumbing naming) generates Bitbeam T parts as you want.
+
+x: number
+  Size of "base" arm. Skipped side holes are set automatically by length.
+y: number
+  size of arm, which is plumb to "base" arm in the middle of it's length.
+
+H (aitch)
+`````````
+.. figure:: img/aitch.png
+  :alt: H example
+  :align: center
+  :figwidth: 100%
+
+.. code:: c++
+
+  cube_t(x, y, shift=1, h=1);
+  cylinder_t(x, y, shift=1, h=1);
+
+H (aitch) generates generates H look like objects.
+
+x: number
+  Width of H part. Side holes opposite to plumb arms are skipped automatically.
+y: number
+  Depth of H part. These arms are shifted from ends.
+shift: number
+  Default value is 1, if is set to 0, the `frame`_ part is generated.

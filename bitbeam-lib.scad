@@ -66,7 +66,8 @@ module cylinder_arm(holes, h=1, side_holes=true, skip=[], skip_side=[]){
 module mix_arm(holes, h=1, side_holes=true, skip=[], skip_side=[]){
     difference(){
         hull(){
-            cube([unit, unit,unit*h], center=true);
+            translate([-unit/2, 0, 0])
+                cube([0.01, unit, unit*h], center=true);
             translate([(holes-1)*unit, 0, 0])
                 cylinder(d=unit, h=unit*h, center=true);
         }
@@ -330,4 +331,58 @@ module cylinder_plate(x, y, x2=0, h=1, holes=[0, 1, 2, 3]){
             }
         }
     }
+}
+
+module cube_t(x, y, h=1){
+    x2 = x/2;
+    cx2 = ceil(x2);
+    if (cx2 > x2) {
+        cube_arm(x, h=h, skip_side=[cx2-1]);
+    } else {
+        cube_arm(x, h=h, skip_side=[cx2-1, cx2]);
+    }
+
+    translate([(x2-0.5)*unit, unit, 0])
+    rotate([0, 0, 90])
+        cube_arm(y, h=h);
+}
+
+module cylinder_t(x, y, h=1){
+    x2 = x/2;
+    cx2 = ceil(x2);
+    if (cx2 > x2) {
+        cylinder_arm(x, h=h, skip_side=[cx2-1]);
+    } else {
+        cylinder_arm(x, h=h, skip_side=[cx2-1, cx2]);
+    }
+
+    translate([(x2-0.5)*unit, unit-0.01, 0])
+    rotate([0, 0, 90])
+        mix_arm(y, h=h);
+}
+
+module cube_h(x, y, shift=1, h=1){
+    cube_arm(x, h=h, skip_side=[shift, x-shift-1]);
+    translate([0, unit*(y-1), 0])
+        cube_arm(x, h=h, skip_side=[shift, x-shift-1]);
+
+    translate([unit*shift, 0, 0])
+        rotate([0, 0, 90])
+        cube_arm(y);
+    translate([unit*(x-shift-1), 0, 0])
+        rotate([0, 0, 90])
+        cube_arm(y);
+}
+
+module cylinder_h(x, y, shift=1, h=1){
+    cylinder_arm(x, h=h, skip_side=[shift, x-shift-1]);
+    translate([0, unit*(y-1), 0])
+        cylinder_arm(x, h=h, skip_side=[shift, x-shift-1]);
+
+    translate([unit*shift, 0, 0])
+        rotate([0, 0, 90])
+        cylinder_arm(y, skip_side=[0, x]);
+    translate([unit*(x-shift-1), 0, 0])
+        rotate([0, 0, 90])
+        cylinder_arm(y, skip_side=[0, x]);
 }
