@@ -386,3 +386,21 @@ module cylinder_h(x, y, shift=1, h=1){
         rotate([0, 0, 90])
         cylinder_arm(y, skip_side=[0, x]);
 }
+
+module cube_y(x, y, z, h=1){
+    cube_arm(x, h=h, skip=[0], skip_side=[0]);
+    rotate([0, 0, 90])
+        cube_arm(y, h=h, skip=[0], skip_side=[0]);
+    translate([-unit/2+unit*h/2, 0, unit/2-unit*h/2])
+        rotate([0, -90, 0])
+        cube_arm(z, h=h, skip=[0], skip_side=[0]);
+}
+
+module cylinder_y(x, y, z, h=1){
+    mix_arm(x, h=h, skip=[0], skip_side=[0]);
+    rotate([0, 0, 90])
+        mix_arm(y, h=h, skip=[0], skip_side=[0]);
+    translate([-unit/2+unit*h/2, 0, unit/2-unit*h/2])
+        rotate([0, -90, 0])
+        mix_arm(z, h=h, skip=[0], skip_side=[0]);
+}

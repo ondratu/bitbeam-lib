@@ -35,7 +35,7 @@ holes
 
 .. code:: c++
 
-  module holes(size, h=1, skip=[]);
+  holes(size, h=1, skip=[]);
 
 Holes module is used in parts. Holes start from center with ``unit`` space. For more details about height, rim and skip, see `parts`_ start.
 
@@ -48,9 +48,9 @@ arm
 
 .. code:: c++
 
-  module cube_arm(size, h=1, side_holes=true, skip=[], skip_side=[]);
-  module cylinder_arm(holes, h=1, side_holes=true, skip=[], skip_side=[]);
-  module mix_arm(holes, h=1, side_holes=true, skip=[], skip_side=[]);
+  cube_arm(size, h=1, side_holes=true, skip=[], skip_side=[]);
+  cylinder_arm(holes, h=1, side_holes=true, skip=[], skip_side=[]);
+  mix_arm(holes, h=1, side_holes=true, skip=[], skip_side=[]);
 
 Arm modules are the base modules. They generate plain part with long ``site*unit`` with holes. Center of arm is in center of first bit. Special ``mix_arm`` start as a ``cube`` but end as ``cylinder``.
 
@@ -74,8 +74,8 @@ angle
 
 .. code:: c++
 
-  module cube_angle(left, right, angle=45, h=1, side_holes=true);
-  module cylinder_angle(left, right, angle=45, h=1, side_holes=true);
+  cube_angle(left, right, angle=45, h=1, side_holes=true);
+  cylinder_angle(left, right, angle=45, h=1, side_holes=true);
 
 Angle modules create parts from two arms ``left`` and ``right``, which are in ``180-angle`` angle. That is standard for tube nodes. Center of arm is in center of middle bit. As you can see in example, middle bit are shared of both left, and right arm. This middle bit never have side hole.
 
@@ -95,8 +95,8 @@ frame
 
 .. code:: c++
 
-  module cube_frame(x, y, h=1, side_holes=true);
-  module cylinder_frame(x, y, h=1, side_holes=true);
+  cube_frame(x, y, h=1, side_holes=true);
+  cylinder_frame(x, y, h=1, side_holes=true);
 
 Frame modules crate frame from four arms without side hole in corners.
 
@@ -109,8 +109,8 @@ base
 
 .. code:: c++
 
-  module cube_base(x, y, x2=0, h=1, fill_holes=true);
-  module cylinder_base(x, y, x2=0, h=1, fill_holes=true);
+  cube_base(x, y, x2=0, h=1, fill_holes=true);
+  cylinder_base(x, y, x2=0, h=1, fill_holes=true);
 
 Base modules can create two type of base parts. First is like frame with fill, second is trapezoid.
 
@@ -177,3 +177,25 @@ y: number
   Depth of H part. These arms are shifted from ends.
 shift: number
   Default value is 1, if is set to 0, the `frame`_ part is generated.
+
+Y (wye)
+```````
+.. figure:: img/wye.png
+  :alt: H example
+  :align: center
+  :figwidth: 100%
+
+.. code:: c++
+
+  cube_y(x, y, z, h=1);
+  cylinder_y(x, y, z, h=1);
+
+Y (wye) generates corner type part, which looks from some angles like Y. When
+you set difference h, the external units are still right.
+
+x: number
+  Size of arm in X axis.
+y: number
+  Size of arm in Y axis.
+z: number
+  Size of arm in Z axis.
