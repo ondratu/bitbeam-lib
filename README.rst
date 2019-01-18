@@ -157,6 +157,25 @@ x: number
 y: number
   size of arm, which is plumb to "base" arm in the middle of it's length.
 
+X (ex)
+``````
+.. figure:: img/ex.png
+  :alt: X example
+  :align: center
+  :figwidth: 100%
+
+.. code:: c++
+
+  cube_x(x, y, h=1);
+  cylinder_x(x, y, h=1);
+
+X (ex) generates Bitbeam X or + parts as you want.
+
+x: number
+  Size of "base" arm. Skipped holes are set automatically by length.
+y: number
+  size of arm, which is cross to "base" arm in the middle of it's length. As in base arm, holes are skipped automatically by length.
+
 H (aitch)
 `````````
 .. figure:: img/aitch.png

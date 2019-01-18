@@ -404,3 +404,46 @@ module cylinder_y(x, y, z, h=1){
         rotate([0, -90, 0])
         mix_arm(z, h=h, skip=[0], skip_side=[0]);
 }
+
+module cube_x(x, y, h=1){
+    x2 = x/2;
+    cx2 = ceil(x2);
+    if (cx2 > x2) {
+        cube_arm(x, h=h, skip_side=[cx2-1]);
+    } else {
+        cube_arm(x, h=h, skip=[cx2-1, cx2], skip_side=[cx2-1, cx2]);
+    }
+
+    y2 = y/2;
+    cy2 = ceil(y2);
+
+    translate([(x2-0.5)*unit, -(y2-0.5)*unit, 0])
+        rotate([0, 0, 90])
+        if (cy2 > y2) {
+            cube_arm(y, h=h, skip_side=[cy2-1]);
+        } else {
+            cube_arm(y, h=h, skip=[cy2-1, cy2], skip_side=[cy2-1, cy2]);
+        }
+}
+
+module cylinder_x(x, y, h=1){
+    x2 = x/2;
+    cx2 = ceil(x2);
+    if (cx2 > x2) {
+        cylinder_arm(x, h=h, skip_side=[cx2-1]);
+    } else {
+        cylinder_arm(x, h=h, skip=[cx2-1, cx2], skip_side=[cx2-1, cx2]);
+    }
+
+    y2 = y/2;
+    cy2 = ceil(y2);
+
+    translate([(x2-0.5)*unit, -(y2-0.5)*unit, 0])
+        rotate([0, 0, 90])
+        if (cy2 > y2) {
+            cylinder_arm(y, h=h, skip_side=[cy2-1]);
+        } else {
+            cylinder_arm(y, h=h, skip=[cy2-1, cy2], skip_side=[cy2-1, cy2]);
+        }
+}
+
