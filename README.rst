@@ -185,8 +185,8 @@ H (aitch)
 
 .. code:: c++
 
-  cube_t(x, y, shift=1, h=1);
-  cylinder_t(x, y, shift=1, h=1);
+  cube_h(x, y, shift=1, h=1);
+  cylinder_h(x, y, shift=1, h=1);
 
 H (aitch) generates generates H look like objects.
 
