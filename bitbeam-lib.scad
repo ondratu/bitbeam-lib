@@ -344,7 +344,7 @@ module cube_t(x, y, h=1){
 
     translate([(x2-0.5)*unit, unit, 0])
     rotate([0, 0, 90])
-        cube_arm(y, h=h);
+        cube_arm(y-1, h=h);
 }
 
 module cylinder_t(x, y, h=1){
@@ -358,7 +358,7 @@ module cylinder_t(x, y, h=1){
 
     translate([(x2-0.5)*unit, unit-0.01, 0])
     rotate([0, 0, 90])
-        mix_arm(y, h=h);
+        mix_arm(y-1, h=h);
 }
 
 module cube_h(x, y, shift=1, h=1){
