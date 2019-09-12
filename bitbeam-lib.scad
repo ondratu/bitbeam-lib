@@ -91,8 +91,8 @@ module cube_angle(left, right, angle=45, h=1, side_holes=true){
     difference(){
         union(){
             rotate([0, 0, 180-angle])
-                cube_arm(left, 1, h=h, side_holes=side_holes, skip_side=[0]);
-            cube_arm(right, 1, h=h, side_holes=side_holes, skip_side=[0]);
+                cube_arm(left, h=h, side_holes=side_holes, skip_side=[0]);
+            cube_arm(right, h=h, side_holes=side_holes, skip_side=[0]);
         }
 
         if (angle > 90 || angle < -90){
@@ -168,7 +168,7 @@ module cube_base(x, y, x2=0, h=1, fill_holes=true){
                 rotate([0, 0, 90])
                     holes(y, h);
 
-            if (fill_holes){
+            if (fill_holes && y > 2){
                 for (i = [1: y-2]) {
                     translate([unit, i*unit, 0])
                         holes(x-2, h);
