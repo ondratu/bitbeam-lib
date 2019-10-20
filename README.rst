@@ -6,8 +6,8 @@ I create this library because some other libraries don't have all what i want. F
 
 Variables
 ---------
-:unit:  Is size of one bit in millimeters, which is **8** for Bitbeam or LEGO® by default. Clementoni® parts have **9**.
-:hole:  Hole diameter in millimeters, which is **4.8**.
+:unit:  Is size of one bit in millimeters, which is **8** for Bitbeam or LEGO® by default. Clementoni® parts have **9**. Merkur® and Meccano® parts have **10**.
+:hole:  Hole diameter in millimeters, which is **4.8** for LEGO® and Clementoni®. Merkur® and Meccano® parts have **4**.
 :rim:   When is set to ``true``, all holes have rim, like LEGO® Technic parts. Default value is **false**.
 :rim_h: Rim height in millimeters, which is **1**.
 :rim_d: Rim diameter in millimeters, which is **6**.
