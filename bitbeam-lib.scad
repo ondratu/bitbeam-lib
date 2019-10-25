@@ -81,18 +81,30 @@ module mix_arm(holes, h=1, side_holes=true, skip=[], skip_side=[]){
 }
 
 module cylinder_angle(left, right, angle=45, h=1, side_holes=true){
-    rotate([0, 0, 180-angle])
-        cylinder_arm(left, h=h, side_holes=side_holes, skip_side=[0]);
-    cylinder_arm(right, h=h, side_holes=side_holes, skip_side=[0]);
+    if ((angle < 270 && angle > 90) || (angle > -270 && angle < -90)) {
+        rotate([0, 0, 180-angle])
+            cylinder_arm(left, h=h, side_holes=side_holes, skip_side=[0, 1]);
+        cylinder_arm(right, h=h, side_holes=side_holes, skip_side=[0, 1]);
+    } else {
+        rotate([0, 0, 180-angle])
+            cylinder_arm(left, h=h, side_holes=side_holes, skip_side=[0]);
+        cylinder_arm(right, h=h, side_holes=side_holes, skip_side=[0]);
+    }
 
 }
 
 module cube_angle(left, right, angle=45, h=1, side_holes=true){
     difference(){
         union(){
-            rotate([0, 0, 180-angle])
-                cube_arm(left, h=h, side_holes=side_holes, skip_side=[0]);
-            cube_arm(right, h=h, side_holes=side_holes, skip_side=[0]);
+            if ((angle < 270 && angle > 90) || (angle > -270 && angle < -90)) {
+                rotate([0, 0, 180-angle])
+                    cube_arm(left, h=h, side_holes=side_holes, skip_side=[0, 1]);
+                cube_arm(right, h=h, side_holes=side_holes, skip_side=[0, 1]);
+            } else {
+                rotate([0, 0, 180-angle])
+                    cube_arm(left, h=h, side_holes=side_holes, skip_side=[0]);
+                cube_arm(right, h=h, side_holes=side_holes, skip_side=[0]);
+            }
         }
 
         if (angle > 90 || angle < -90){
