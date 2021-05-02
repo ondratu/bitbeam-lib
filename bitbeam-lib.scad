@@ -7,6 +7,7 @@ rim_h = 1;
 rim_d = 6;
 
 rim = false;
+edge = 0.5;
 
 $fn=25;
 
@@ -31,13 +32,54 @@ module holes(size, h=1, skip=[]){
     }
 }
 
+module ecube(size, center=false){
+    difference(){
+        cube(size, center);
+
+        if (edge) {
+            for(y=[-1, 1]) for(z=[-1, 1])
+                translate([0, size[1]*0.5*y, size[2]*0.5*z])
+                rotate([45, 0, 0])
+                cube([size[0], edge, edge], center=true);
+
+            for(x=[-1, 1]) for(z=[-1, 1])
+                translate([size[0]*0.5*x, 0, size[2]*0.5*z])
+                rotate([0, 45, 0])
+                cube([edge, size[1], edge], center=true);
+
+            for(x=[-1, 1]) for(y=[-1, 1])
+                translate([size[0]*0.5*x, size[1]*0.5*y, 0])
+                rotate([0, 0, 45])
+                cube([edge, edge, size[2]], center=true);
+        }
+    }
+}
+
+module ecylinder(d, h, center=false){
+    difference(){
+        cylinder(d=d, h=h, center=center);
+
+        if (edge) {
+            z = center ? -h/2 : 0;
+
+            translate([0, 0, z])
+                rotate_extrude()
+                    translate([d/2, 0])
+                    rotate([0, 0, 45])
+                        square([edge, edge], center=true);
+            translate([0, 0, z+h])
+                rotate_extrude()
+                    translate([d/2, 0])
+                    rotate([0, 0, 45])
+                        square([edge, edge], center=true);
+        }
+    }
+}
+
 module cube_arm(size, h=1, side_holes=true, skip=[], skip_side=[]){
     difference(){
-        hull(){
-            cube([unit, unit, unit*h], center=true);
-            translate([(size-1)*unit, 0, 0])
-                cube([unit, unit, unit*h], center=true);
-        }
+        translate([unit*size/2-unit/2, 0, 0])
+            ecube([size*unit, unit, unit*h], center=true);
 
         holes(size, h, skip);
         if (side_holes && h >= 1){
@@ -50,9 +92,9 @@ module cube_arm(size, h=1, side_holes=true, skip=[], skip_side=[]){
 module cylinder_arm(holes, h=1, side_holes=true, skip=[], skip_side=[]){
     difference(){
         hull(){
-            cylinder(d=unit, h=unit*h, center=true);
+            ecylinder(d=unit, h=unit*h, center=true);
             translate([(holes-1)*unit, 0, 0])
-                cylinder(d=unit, h=unit*h, center=true);
+                ecylinder(d=unit, h=unit*h, center=true);
         }
 
         holes(holes, h, skip);
@@ -66,10 +108,10 @@ module cylinder_arm(holes, h=1, side_holes=true, skip=[], skip_side=[]){
 module mix_arm(holes, h=1, side_holes=true, skip=[], skip_side=[]){
     difference(){
         hull(){
-            translate([-unit/2, 0, 0])
-                cube([0.01, unit, unit*h], center=true);
+            translate([-unit/4, 0, 0])
+                ecube([unit/2, unit, unit*h], center=true);
             translate([(holes-1)*unit, 0, 0])
-                cylinder(d=unit, h=unit*h, center=true);
+                ecylinder(d=unit, h=unit*h, center=true);
         }
 
         holes(holes, h, skip);
@@ -126,6 +168,26 @@ module cube_angle(left, right, angle=45, h=1, side_holes=true){
                 translate([unit, 0, 0])
                     holes(1, h);
         }
+
+        if (edge){
+            for(z=[-1, 1])
+                translate([0, -unit/2, h*unit*0.5*z])
+                rotate([45, 0, 0])
+                cube([unit, edge, edge], center=true);
+
+            for(z=[-1, 1])
+                rotate([0, 0, 180-angle])
+                translate([0, unit/2, h*unit*0.5*z])
+                rotate([45, 0, 0])
+                cube([unit, edge, edge], center=true);
+
+            if (angle > 90 || angle < -90){
+                for (z=[-1, 1])
+                    translate([-unit*0.5, 0, unit*0.5*z])
+                        rotate([0, 45, 0])
+                        cube([edge, unit, edge], center=true);
+            }
+        }
     }
 }
 
@@ -157,15 +219,15 @@ module cube_base(x, y, x2=0, h=1, fill_holes=true){
     difference(){
         hull(){
             hull(){
-                cube([unit, unit, unit*h], center=true);
+                ecube([unit, unit, unit*h], center=true);
                 translate([(x-1)*unit, 0, 0])
-                    cube([unit, unit, unit*h], center=true);
+                    ecube([unit, unit, unit*h], center=true);
             }
             translate([0, (y-1)*unit, 0])
             hull(){
-                cube([unit, unit, unit*h], center=true);
+                ecube([unit, unit, unit*h], center=true);
                 translate([(x2-1)*unit, 0, 0])
-                    cube([unit, unit, unit*h], center=true);
+                    ecube([unit, unit, unit*h], center=true);
             }
         }
 
@@ -208,15 +270,15 @@ module cylinder_base(x, y, x2=0, h=1, fill_holes=true){
     difference(){
         hull(){
             hull(){
-                cylinder(d=unit, h=h*unit, center=true);
+                ecylinder(d=unit, h=h*unit, center=true);
                 translate([(x-1)*unit, 0, 0])
-                    cylinder(d=unit, h=h*unit, center=true);
+                    ecylinder(d=unit, h=h*unit, center=true);
             }
             translate([0, (y-1)*unit, 0])
             hull(){
-                cylinder(d=unit, h=h*unit, center=true);
+                ecylinder(d=unit, h=h*unit, center=true);
                 translate([(x2-1)*unit, 0, 0])
-                    cylinder(d=unit, h=h*unit, center=true);
+                    ecylinder(d=unit, h=h*unit, center=true);
             }
         }
  
@@ -260,15 +322,15 @@ module cube_plate(x, y, x2=0, h=1, holes=[0, 1, 2, 3]){
     difference(){
         hull(){
             hull(){
-                cube([unit, unit, unit*h], center=true);
+                ecube([unit, unit, unit*h], center=true);
                 translate([(x-1)*unit, 0, 0])
-                    cube([unit, unit, unit*h], center=true);
+                    ecube([unit, unit, unit*h], center=true);
             }
             translate([0, (y-1)*unit, 0])
             hull(){
-                cube([unit, unit, unit*h], center=true);
+                ecube([unit, unit, unit*h], center=true);
                 translate([(x2-1)*unit, 0, 0])
-                    cube([unit, unit, unit*h], center=true);
+                    ecube([unit, unit, unit*h], center=true);
             }
         }
         if (search(0, holes)){
@@ -305,15 +367,15 @@ module cylinder_plate(x, y, x2=0, h=1, holes=[0, 1, 2, 3]){
     difference(){
         hull(){
             hull(){
-                cylinder(d=unit, h=h*unit, center=true);
+                ecylinder(d=unit, h=h*unit, center=true);
                 translate([(x-1)*unit, 0, 0])
-                    cylinder(d=unit, h=h*unit, center=true);
+                    ecylinder(d=unit, h=h*unit, center=true);
             }
             translate([0, (y-1)*unit, 0])
             hull(){
-                cylinder(d=unit, h=h*unit, center=true);
+                ecylinder(d=unit, h=h*unit, center=true);
                 translate([(x2-1)*unit, 0, 0])
-                    cylinder(d=unit, h=h*unit, center=true);
+                    ecylinder(d=unit, h=h*unit, center=true);
             }
         }
         if (search(0, holes)){
@@ -357,6 +419,9 @@ module cube_t(x, y, h=1){
     translate([(x2-0.5)*unit, unit, 0])
     rotate([0, 0, 90])
         cube_arm(y-1, h=h);
+
+    translate([(x2-0.5)*unit, unit*0.5, 0])
+        cube([unit, edge*2.01, unit], center=true);
 }
 
 module cylinder_t(x, y, h=1){
@@ -371,6 +436,9 @@ module cylinder_t(x, y, h=1){
     translate([(x2-0.5)*unit, unit-0.01, 0])
     rotate([0, 0, 90])
         mix_arm(y-1, h=h);
+
+    translate([(x2-0.5)*unit, unit*0.5, 0])
+        cube([unit, edge*2.01, unit], center=true);
 }
 
 module cube_h(x, y, shift=1, h=1){
@@ -458,4 +526,3 @@ module cylinder_x(x, y, h=1){
             cylinder_arm(y, h=h, skip=[cy2-1, cy2], skip_side=[cy2-1, cy2]);
         }
 }
-

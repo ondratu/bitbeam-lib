@@ -10,7 +10,8 @@ Variables
 :hole:  Hole diameter in millimeters, which is **4.8** for LEGO® and Clementoni®. Merkur® and Meccano® parts have **4**.
 :rim:   When is set to ``true``, all holes have rim, like LEGO® Technic parts. Default value is **false**.
 :rim_h: Rim height in millimeters, which is **1**.
-:rim_d: Rim diameter in millimeters, which is **6**.
+:rim_d: Rim diameter in millimeters which is **6**.
+:edge: Edge (rounding) for all beams which is **0.5** by default.
 :$fn:   Openscad number of fragments used by holes and ``cylinder_`` parts. Library set this to **25**.
 
 Parts
