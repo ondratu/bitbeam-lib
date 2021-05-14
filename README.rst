@@ -50,7 +50,7 @@ arm
 .. code:: c++
 
   cube_arm(size, h=1, side_holes=true, skip=[], skip_side=[]);
-  cylinder_arm(holes, h=1, side_holes=true, skip=[], skip_side=[]);
+  cylinder_arm(size, h=1, side_holes=true, skip=[], skip_side=[]);
   mix_arm(holes, h=1, side_holes=true, skip=[], skip_side=[]);
 
 Arm modules are the base modules. They generate plain part with long ``site*unit`` with holes. Center of arm is in center of first bit. Special ``mix_arm`` start as a ``cube`` but end as ``cylinder``.
