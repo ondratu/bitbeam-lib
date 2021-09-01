@@ -36,7 +36,7 @@ module ecube(size, center=false){
     difference(){
         cube(size, center);
 
-        if (edge) {
+        if (center && edge) {
             for(y=[-1, 1]) for(z=[-1, 1])
                 translate([0, size[1]*0.5*y, size[2]*0.5*z])
                 rotate([45, 0, 0])
@@ -49,6 +49,21 @@ module ecube(size, center=false){
 
             for(x=[-1, 1]) for(y=[-1, 1])
                 translate([size[0]*0.5*x, size[1]*0.5*y, 0])
+                rotate([0, 0, 45])
+                cube([edge, edge, size[2]], center=true);
+        } else if (edge) {
+            for(y=[0, 1]) for(z=[0, 1])
+                translate([size[0]*0.5, size[1]*y, size[2]*z])
+                rotate([45, 0, 0])
+                cube([size[0], edge, edge], center=true);
+
+            for(x=[-0, 1]) for(z=[0, 1])
+                translate([size[0]*x, size[1]*0.5, size[2]*z])
+                rotate([0, 45, 0])
+                cube([edge, size[1], edge], center=true);
+
+            for(x=[0, 1]) for(y=[0, 1])
+                translate([size[0]*x, size[1]*y, size[2]*0.5])
                 rotate([0, 0, 45])
                 cube([edge, edge, size[2]], center=true);
         }
