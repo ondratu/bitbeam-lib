@@ -12,7 +12,7 @@ edge = 0.5;
 $fn=25;
 
 module holes(size, h=1, skip=[]){
-    if (size > 0) {
+    if (size >= 1) {
         for(i = [0:size-1]){
             if (!search(i, skip)){
                 translate([i*unit, 0, 0])
