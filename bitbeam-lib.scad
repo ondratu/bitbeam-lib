@@ -28,9 +28,19 @@ module holes(size, h=1, skip=[]){
                         cylinder(d=rim_d, h=rim_h+0.1, center=true);
                 }
             }
+        } else {
+            for(i = [0:size-1]){
+                 if (!search(i, skip)){
+                    translate([i*unit, 0, h*unit/2-0.8])
+                        cylinder(d=hole+0.2, h=0.75, center=true);
+                    translate([i*unit, 0, -h*unit/2+0.8])
+                        cylinder(d=hole+0.2, h=0.75, center=true);
+                }
+            }
         }
     }
 }
+
 
 module ecube(size, center=false){
     difference(){
