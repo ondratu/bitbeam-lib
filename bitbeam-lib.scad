@@ -1,7 +1,7 @@
 BIT = 8;    // Standard Bitbeam size
 CLE = 9;    // Size for Clemmenti
 
-unit = 8;
+unit = BIT;
 hole = 4.8;
 rim_h = 1;
 rim_d = 6;
@@ -430,11 +430,17 @@ module cube_t(x, y, h=1){
     }
 
     translate([(x2-0.5)*unit, unit, 0])
-    rotate([0, 0, 90])
-        cube_arm(y-1, h=h);
+        rotate([0, 0, 90])
+        difference(){
+            translate([unit*(y-1)/2 - unit/2-0.4, 0, 0])
+                ecube([(y-1)*unit+0.8, unit, unit*h], true);
 
-    translate([(x2-0.5)*unit, unit*0.5, 0])
-        cube([unit, edge*2.01, unit], center=true);
+            holes(y-1, h);
+            if (h >= 1){
+                rotate([90, 0, 0])
+                    holes(y-1);
+            }
+        }
 }
 
 module cylinder_t(x, y, h=1){
@@ -446,12 +452,22 @@ module cylinder_t(x, y, h=1){
         cylinder_arm(x, h=h, skip_side=[cx2-1, cx2]);
     }
 
-    translate([(x2-0.5)*unit, unit-0.01, 0])
-    rotate([0, 0, 90])
-        mix_arm(y-1, h=h);
+    translate([(x2-0.5)*unit, unit, 0])
+        rotate([0, 0, 90])
+        difference(){
+            hull(){
+                translate([-unit/4-0.8, 0, 0])
+                    ecube([unit/2, unit, unit*h], center=true);
+                translate([(y-2)*unit, 0, 0])
+                    ecylinder(d=unit, h=unit*h, center=true);
+        }
 
-    translate([(x2-0.5)*unit, unit*0.5, 0])
-        cube([unit, edge*2.01, unit], center=true);
+        holes(y-1, h);
+        if (h >= 1) {
+            rotate([90, 0, 0])
+                holes(y-1);
+        }
+    }
 }
 
 module cube_h(x, y, shift=1, h=1){
