@@ -89,6 +89,15 @@ module ecylinder(d, h, center=false){
         ]);
 }
 
+module hcylinder(d, h, center=false){
+    translate([0, 0, -h/2*(center ? 1 : 0)])
+    rotate_extrude($fn=d*4)
+        polygon([
+            [0, 0], [d/2+0.35, 0], [d/2,0.35],
+            [d/2, h-0.35], [d/2+0.35, h], [0, h]
+        ]);
+}
+
 module cube_arm(size, h=1, side_holes=true, skip=[], skip_side=[]){
     difference(){
         translate([unit*size/2-unit/2, 0, 0])
