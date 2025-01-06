@@ -80,9 +80,10 @@ module ecube(size, center=false){
     }
 }
 
-module ecylinder(d, h, center=false){
+module ecylinder(d, h, center=false, $fn=0){
+    $fn = $fn ? $fn : d * 4;
     translate([0, 0, -h/2*(center ? 1 : 0)])
-    rotate_extrude($fn=d*4)
+    rotate_extrude($fn=$fn)
         polygon([
             [0, 0], [d/2-0.35, 0], [d/2,0.35],
             [d/2, h-0.35], [d/2-0.35, h], [0, h]
