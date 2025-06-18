@@ -1,6 +1,6 @@
 Bitbeam-lib
 ===========
-Openscad Bitbeam library for easy create `Bitbeam <https://bitbeam.org/>`_,  `M-Bitbeam <http://www.tfsoft.cz/m-bitbeam/>`_, LEGO® Technic or Clementoni® compatible parts.
+Openscad Bitbeam library for easy create `BitBeam <https://bitbeam.cc/>`_,  `m-BITBEAM <http://www.tfsoft.cz/m-bitbeam/>`_, LEGO® Technic, Clementoni®, Merkur® or Meccano® compatible parts.
 
 I create this library because some other libraries don't have all what i want. First I create my own extends, that i create one library with full functionality which I want.
 
